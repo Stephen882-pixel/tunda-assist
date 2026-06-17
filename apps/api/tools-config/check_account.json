@@ -1,0 +1,20 @@
+{
+  "type": "function",
+  "function": {
+    "name": "check_account",
+    "description": "Looks up a SunCulture customer's account information using their National ID number. Returns their name, account status, product, total paid, outstanding balance, and next instalment date and amount. Use this when a caller asks about their account balance, payment status, whether their account is locked, their next payment date, or what product they have. Always ask for the caller's National ID before calling this tool.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "national_id": {
+          "type": "string",
+          "description": "The caller's Kenya National ID number (numbers only, no spaces or dashes)."
+        }
+      },
+      "required": ["national_id"]
+    }
+  },
+  "server": {
+    "url": "{{SERVER_URL}}/vapi/webhook"
+  }
+}

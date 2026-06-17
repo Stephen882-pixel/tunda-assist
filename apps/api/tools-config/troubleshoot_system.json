@@ -1,0 +1,30 @@
+{
+  "type": "function",
+  "function": {
+    "name": "troubleshoot_system",
+    "description": "Guides a caller through diagnosing and fixing a SunCulture system issue. Use this whenever a caller reports that their system is not working — pump not starting, low water flow, system locked, battery or charging problems, solar panel faults, controller light queries, or drip irrigation issues. Use 'escalate_technician' when basic troubleshooting steps have not resolved the issue.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "issue_type": {
+          "type": "string",
+          "description": "The type of system issue the caller is experiencing.",
+          "enum": [
+            "pump_not_starting",
+            "low_water_output",
+            "system_locked",
+            "battery_not_charging",
+            "solar_panel_issue",
+            "controller_lights",
+            "drip_irrigation_issue",
+            "escalate_technician"
+          ]
+        }
+      },
+      "required": ["issue_type"]
+    }
+  },
+  "server": {
+    "url": "{{SERVER_URL}}/vapi/webhook"
+  }
+}

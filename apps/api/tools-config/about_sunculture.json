@@ -1,0 +1,39 @@
+{
+  "type": "function",
+  "function": {
+    "name": "about_sunculture",
+    "description": "Returns information about SunCulture the company. Use this for questions about what SunCulture does, its mission, impact, countries of operation, contact details, payment options (M-Pesa paybill numbers, bank accounts), SunCulture Protect insurance, Kilimo Boost input financing, branch locations, warranty and free services, and account management (USSD, locking/unlocking behaviour).",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "type": "string",
+          "description": "The specific topic to retrieve information about.",
+          "enum": [
+            "general",
+            "mission",
+            "what_we_do",
+            "products",
+            "financing",
+            "impact",
+            "countries",
+            "headquarters",
+            "founded",
+            "funding",
+            "contact",
+            "payment_options",
+            "insurance",
+            "kilimo_boost",
+            "branches",
+            "free_services",
+            "account_management"
+          ]
+        }
+      },
+      "required": ["category"]
+    }
+  },
+  "server": {
+    "url": "{{SERVER_URL}}/vapi/webhook"
+  }
+}

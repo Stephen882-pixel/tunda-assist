@@ -1,0 +1,78 @@
+{
+  "type": "function",
+  "function": {
+    "name": "create_sunculture_lead",
+    "description": "After validate_sunculture_agent succeeds, submit a new customer lead to the SunCulture sales app (AMT). Use the AMT employee record id from validation as validated_employee_id. Collect all required fields; lead source and water source must match Sales App labels exactly. Product of interest must match the app (e.g. CSD1+RM2S MAX). Languages: en, fr, sw. If the API errors, the lead may already exist—relay the message.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "validated_employee_id": {
+          "type": "number",
+          "description": "Integer AMT id from validate_sunculture_agent success"
+        },
+        "firstName": { "type": "string" },
+        "lastName": { "type": "string" },
+        "customer_type": {
+          "type": "string",
+          "enum": ["individual", "distributor"]
+        },
+        "mobilePhone": { "type": "string" },
+        "location": { "type": "string" },
+        "nearestLandmark": { "type": "string" },
+        "productOfInterest": { "type": "string" },
+        "leadSource": {
+          "type": "string",
+          "enum": [
+            "Self Registration Whatsapp",
+            "Stockist",
+            "X Marketing",
+            "Influencer Marketing",
+            "N/A",
+            "Whatsapp",
+            "Website",
+            "Walk-In"
+          ]
+        },
+        "preferredLanguage": {
+          "type": "string",
+          "enum": ["en", "fr", "sw"]
+        },
+        "purchaseDate": { "type": "string" },
+        "waterSource": {
+          "type": "string",
+          "enum": [
+            "Rainwater Harvesting",
+            "Rain",
+            "Lake",
+            "Shallow Water",
+            "River",
+            "Dam"
+          ]
+        },
+        "leadCategory": {
+          "type": "string",
+          "enum": ["HOT", "WARM", "COLD"]
+        },
+        "companyRegionId": { "type": "number" }
+      },
+      "required": [
+        "validated_employee_id",
+        "firstName",
+        "lastName",
+        "customer_type",
+        "mobilePhone",
+        "location",
+        "nearestLandmark",
+        "productOfInterest",
+        "leadSource",
+        "preferredLanguage",
+        "purchaseDate",
+        "waterSource",
+        "leadCategory"
+      ]
+    }
+  },
+  "server": {
+    "url": "{{SERVER_URL}}/vapi/webhook"
+  }
+}

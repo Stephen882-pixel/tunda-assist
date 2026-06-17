@@ -1,0 +1,51 @@
+{
+  "type": "function",
+  "function": {
+    "name": "get_product_info",
+    "description": "Returns detailed product information about SunCulture's solar irrigation systems. Use this when a caller asks about specific products, which product suits their farm, technical specifications (flow rates, pump depth, battery capacity), product comparisons, or available add-ons.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "query_type": {
+          "type": "string",
+          "description": "The type of product query. Use 'catalog_overview' for a general product summary, 'product_line_overview' for details on a specific line, 'variant_details' for a specific model, 'compare_lines' to compare ClimateSmart Direct vs Battery, 'recommend_by_farm_size' to suggest a product based on farm size, 'add_ons' for drip irrigation and TV add-ons, 'features' for technical specs.",
+          "enum": [
+            "catalog_overview",
+            "product_line_overview",
+            "variant_details",
+            "compare_lines",
+            "recommend_by_farm_size",
+            "add_ons",
+            "features"
+          ]
+        },
+        "product_line": {
+          "type": "string",
+          "description": "The product line to query. Required when query_type is 'product_line_overview' or 'variant_details'.",
+          "enum": [
+            "climate_smart_direct",
+            "climate_smart_battery"
+          ]
+        },
+        "variant": {
+          "type": "string",
+          "description": "The specific product variant. Required when query_type is 'variant_details'.",
+          "enum": [
+            "rainmaker_2s",
+            "rainmaker_2s_max",
+            "rainmaker_2c_kubwa",
+            "rainmaker_2c"
+          ]
+        },
+        "farm_size_acres": {
+          "type": "number",
+          "description": "The caller's farm size in acres. Required when query_type is 'recommend_by_farm_size'."
+        }
+      },
+      "required": ["query_type"]
+    }
+  },
+  "server": {
+    "url": "{{SERVER_URL}}/vapi/webhook"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "ivy-ai",
+  "private": true,
+  "scripts": {
+    "dev:api": "pnpm --filter @ivy-ai/api dev",
+    "dev:web": "pnpm --filter @ivy-ai/web dev",
+    "dev": "concurrently \"pnpm dev:api\" \"pnpm dev:web\"",
+    "build:api": "pnpm --filter @ivy-ai/api build",
+    "build:web": "pnpm --filter @ivy-ai/web build",
+    "build": "pnpm build:api && pnpm build:web",
+    "test": "pnpm --filter @ivy-ai/api test",
+    "prisma:generate": "prisma generate --schema prisma/schema.prisma",
+    "prisma:migrate": "prisma migrate dev --schema prisma/schema.prisma"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}

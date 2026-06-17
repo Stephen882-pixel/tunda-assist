@@ -1,0 +1,31 @@
+{
+  "type": "function",
+  "function": {
+    "name": "get_pricing",
+    "description": "Returns pricing information for SunCulture products. Use this when a caller asks how much a system costs, what the deposit is, how the PAYGO/Lipa Polepole financing works, or about the Refer and Earn program. Always use this tool for pricing — never guess or estimate prices.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "query_type": {
+          "type": "string",
+          "description": "The pricing query type. Use 'all_products' for a full price list, 'product_price' for a specific product's price, 'paygo_explanation' to explain how Lipa Polepole financing works, 'deposit_info' for deposit amounts, 'refer_and_earn' for the referral program details.",
+          "enum": [
+            "all_products",
+            "product_price",
+            "paygo_explanation",
+            "deposit_info",
+            "refer_and_earn"
+          ]
+        },
+        "product_code": {
+          "type": "string",
+          "description": "The internal product code to look up a specific price. Optional — use when the caller has asked about a specific product. Valid codes: csd_rm2s, csd_rm2ck, csd_rm2s_max, csd_surface_pump, falcon_rm2ck, falcon_sp_max, csb_rm2, csb_rm2_tv, csb_rm2_drip, csb_rm2_drip_tv, csb2_rm2s, csb2_rm2ck, csb2_surface_pump, csb1_swapout, csb2_upgrade."
+        }
+      },
+      "required": ["query_type"]
+    }
+  },
+  "server": {
+    "url": "{{SERVER_URL}}/vapi/webhook"
+  }
+}

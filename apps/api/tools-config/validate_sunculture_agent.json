@@ -1,0 +1,25 @@
+{
+  "type": "function",
+  "function": {
+    "name": "validate_sunculture_agent",
+    "description": "Validates a SunCulture employee/agent in the internal AMT directory using their registered mobile number. Use as the first step when the person wants to create a lead, check commissions, or similar agent-only workflows. Ask for their phone number in Kenya format (07… or 2547…) before calling. If lookup fails, say their details could not be verified.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "phone": {
+          "type": "string",
+          "description": "Mobile number on the agent's SunCulture profile (e.g. 254748717044 or 0748717044)"
+        },
+        "inquiry_type": {
+          "type": "string",
+          "enum": ["create_lead", "commissions", "other"],
+          "description": "What the user is trying to do (optional context)"
+        }
+      },
+      "required": ["phone"]
+    }
+  },
+  "server": {
+    "url": "{{SERVER_URL}}/vapi/webhook"
+  }
+}

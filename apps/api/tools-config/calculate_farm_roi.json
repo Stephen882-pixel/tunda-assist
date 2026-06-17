@@ -1,0 +1,36 @@
+{
+  "type": "function",
+  "function": {
+    "name": "calculate_farm_roi",
+    "description": "Calculates an estimated farm income and ROI projection for a SunCulture solar irrigation system based on the caller's crop type, farm size, and current fuel spend. Use this when a caller asks how much they could earn, whether the system is worth it financially, or wants to compare their current costs against SunCulture payments. Always ask for crop type and farm size before calling this tool.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "crop_type": {
+          "type": "string",
+          "description": "The primary crop the farmer grows. Use 'other' if the crop is not listed or the caller has not specified.",
+          "enum": [
+            "tomatoes",
+            "onions",
+            "cabbages",
+            "passion_fruit",
+            "capsicum",
+            "other"
+          ]
+        },
+        "farm_size_acres": {
+          "type": "number",
+          "description": "The size of the caller's farm in acres. Minimum 0.5."
+        },
+        "monthly_fuel_spend_kes": {
+          "type": "number",
+          "description": "How much the caller currently spends on fuel per month in KES for their irrigation pump. Use 0 if they do not currently use a fuel pump."
+        }
+      },
+      "required": ["crop_type", "farm_size_acres", "monthly_fuel_spend_kes"]
+    }
+  },
+  "server": {
+    "url": "{{SERVER_URL}}/vapi/webhook"
+  }
+}

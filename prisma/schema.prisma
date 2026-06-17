@@ -1,0 +1,62 @@
+generator client {
+  provider   = "prisma-client"
+  output     = "../apps/api/generated/prisma"
+  engineType = "client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model CallReport {
+  id          String   @id @default(uuid())
+  callId      String   @unique @map("call_id")
+  duration    Float?
+  cost        Float?
+  summary     String?
+  transcript  String?
+  endedReason String?  @map("ended_reason")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("call_reports")
+}
+
+enum ChatMessageRole {
+  user
+  assistant
+  tool
+  system
+}
+
+/// Native OpenAI+Socket.IO chat (independent of Vapi / Telegram)
+model ChatThread {
+  id        String         @id @default(uuid())
+  title     String?
+  metadata  Json?
+  createdAt DateTime       @default(now()) @map("created_at")
+  updatedAt DateTime       @updatedAt @map("updated_at")
+  messages  ChatMessage[]
+
+  @@map("chat_threads")
+}
+
+model ChatMessage {
+  id         String           @id @default(uuid())
+  threadId   String           @map("thread_id")
+  role       ChatMessageRole
+  /// Text body for user, assistant, and tool; null only when an assistant message is tool-calls only.
+  content    String?
+  toolCallId String?          @map("tool_call_id")
+  toolName   String?          @map("tool_name")
+  /// Snapshot of `tool_calls` on assistant messages (OpenAI), for replaying context.
+  toolCalls  Json?            @map("tool_calls")
+  openaiId   String?          @map("openai_message_id")
+  tokenUsage Json?            @map("token_usage")
+  createdAt  DateTime         @default(now()) @map("created_at")
+
+  thread ChatThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+
+  @@index([threadId, createdAt])
+  @@map("chat_messages")
+}

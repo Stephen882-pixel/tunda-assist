@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --color-background: #f5f7f5;
+  --color-foreground: #1a2e22;
+  --color-primary: #2e9e6e;
+  --color-primary-dark: #1a5c42;
+  --color-accent: #f5c842;
+  --color-border: #e8eeeb;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  background-color: #f5f7f5;
+}
+
+body {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #1a2e22;
+  background-color: #f5f7f5;
+}
+
+/* ── Header gradient: dark forest green ── */
+.chat-header-gradient {
+  background: linear-gradient(135deg, #2e7d5e 0%, #1a5c42 60%, #0f4a32 100%);
+}
+
+/* ── Send / FAB gradient ── */
+.chat-send-gradient {
+  background: linear-gradient(135deg, #4cca85 0%, #2e9e6e 100%);
+}
+
+/* ── User bubble gradient ── */
+.chat-user-bubble {
+  background: linear-gradient(135deg, #3db87a 0%, #2e9e6e 100%);
+}
+
+/* ── Message entry animation ── */
+@keyframes messageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message-enter {
+  animation: messageSlideIn 0.25s ease-out both;
+}
+
+/* ── Custom scrollbar ── */
+.chat-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.chat-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.chat-scroll::-webkit-scrollbar-thumb {
+  background: #c8ddd0;
+  border-radius: 2px;
+}
+.chat-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #d0e4d8 transparent;
+}

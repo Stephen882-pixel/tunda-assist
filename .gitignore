@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Environment variables
+.env
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+
+# training materials
+training_materials/
+
+# prisma generated files
+generated/
+
+# AI / IDE tool config (not project code)
+.agents/
+.claude/
+.junie/
+.windsurf/
+skills/
+skills-lock.json

@@ -1,0 +1,343 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "about_sunculture",
+      "description": "Returns information about SunCulture the company. Use this for questions about what SunCulture does, its mission, impact, countries of operation, contact details, payment options (M-Pesa paybill numbers, bank accounts), SunCulture Protect insurance, Kilimo Boost input financing, branch locations, warranty and free services, and account management (USSD, locking/unlocking behaviour).",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "description": "The specific topic to retrieve information about.",
+            "enum": [
+              "general",
+              "mission",
+              "what_we_do",
+              "products",
+              "financing",
+              "impact",
+              "countries",
+              "headquarters",
+              "founded",
+              "funding",
+              "contact",
+              "payment_options",
+              "insurance",
+              "kilimo_boost",
+              "branches",
+              "free_services",
+              "account_management"
+            ]
+          }
+        },
+        "required": ["category"]
+      }
+    },
+    "server": {
+      "url": "{{SERVER_URL}}/vapi/webhook"
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "get_product_info",
+      "description": "Returns detailed product information about SunCulture's solar irrigation systems. Use this when a caller asks about specific products, which product suits their farm, technical specifications (flow rates, pump depth, battery capacity), product comparisons, or available add-ons.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query_type": {
+            "type": "string",
+            "description": "The type of product query. Use 'catalog_overview' for a general product summary, 'product_line_overview' for details on a specific line, 'variant_details' for a specific model, 'compare_lines' to compare ClimateSmart Direct vs Battery, 'recommend_by_farm_size' to suggest a product based on farm size, 'add_ons' for drip irrigation and TV add-ons, 'features' for technical specs.",
+            "enum": [
+              "catalog_overview",
+              "product_line_overview",
+              "variant_details",
+              "compare_lines",
+              "recommend_by_farm_size",
+              "add_ons",
+              "features"
+            ]
+          },
+          "product_line": {
+            "type": "string",
+            "description": "The product line to query. Required when query_type is 'product_line_overview' or 'variant_details'.",
+            "enum": [
+              "climate_smart_direct",
+              "climate_smart_battery"
+            ]
+          },
+          "variant": {
+            "type": "string",
+            "description": "The specific product variant. Required when query_type is 'variant_details'.",
+            "enum": [
+              "rainmaker_2s",
+              "rainmaker_2s_max",
+              "rainmaker_2c_kubwa",
+              "rainmaker_2c"
+            ]
+          },
+          "farm_size_acres": {
+            "type": "number",
+            "description": "The caller's farm size in acres. Required when query_type is 'recommend_by_farm_size'."
+          }
+        },
+        "required": ["query_type"]
+      }
+    },
+    "server": {
+      "url": "{{SERVER_URL}}/vapi/webhook"
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "get_pricing",
+      "description": "Returns pricing information for SunCulture products. Use this when a caller asks how much a system costs, what the deposit is, how the PAYGO/Lipa Polepole financing works, or about the Refer and Earn program. Always use this tool for pricing — never guess or estimate prices.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query_type": {
+            "type": "string",
+            "description": "The pricing query type. Use 'all_products' for a full price list, 'product_price' for a specific product's price, 'paygo_explanation' to explain how Lipa Polepole financing works, 'deposit_info' for deposit amounts, 'refer_and_earn' for the referral program details.",
+            "enum": [
+              "all_products",
+              "product_price",
+              "paygo_explanation",
+              "deposit_info",
+              "refer_and_earn"
+            ]
+          },
+          "product_code": {
+            "type": "string",
+            "description": "The internal product code to look up a specific price. Optional — use when the caller has asked about a specific product. Valid codes: csd_rm2s, csd_rm2ck, csd_rm2s_max, csd_surface_pump, falcon_rm2ck, falcon_sp_max, csb_rm2, csb_rm2_tv, csb_rm2_drip, csb_rm2_drip_tv, csb2_rm2s, csb2_rm2ck, csb2_surface_pump, csb1_swapout, csb2_upgrade."
+          }
+        },
+        "required": ["query_type"]
+      }
+    },
+    "server": {
+      "url": "{{SERVER_URL}}/vapi/webhook"
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "handle_objection",
+      "description": "Returns a scripted, empathetic response to a caller's objection or hesitation about purchasing a SunCulture system. Always use this tool when a caller pushes back — never improvise objection responses. Covers price concerns, deposit size, distrust of solar companies, reliability worries, needing family input, stalling, water source depth concerns, existing petrol pump ownership, fraud fears, and unclear volume requirements.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "objection_type": {
+            "type": "string",
+            "description": "The type of objection or concern the caller has raised.",
+            "enum": [
+              "price_too_expensive",
+              "deposit_too_high",
+              "solar_company_distrust",
+              "what_if_it_breaks",
+              "need_to_consult_family",
+              "let_me_think",
+              "water_source_too_deep",
+              "already_have_petrol_pump",
+              "fraud_concerns",
+              "volume_requirements_unclear"
+            ]
+          }
+        },
+        "required": ["objection_type"]
+      }
+    },
+    "server": {
+      "url": "{{SERVER_URL}}/vapi/webhook"
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "calculate_farm_roi",
+      "description": "Calculates an estimated farm income and ROI projection for a SunCulture solar irrigation system based on the caller's crop type, farm size, and current fuel spend. Use this when a caller asks how much they could earn, whether the system is worth it financially, or wants to compare their current costs against SunCulture payments. Always ask for crop type and farm size before calling this tool.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "crop_type": {
+            "type": "string",
+            "description": "The primary crop the farmer grows. Use 'other' if the crop is not listed or the caller has not specified.",
+            "enum": [
+              "tomatoes",
+              "onions",
+              "cabbages",
+              "passion_fruit",
+              "capsicum",
+              "other"
+            ]
+          },
+          "farm_size_acres": {
+            "type": "number",
+            "description": "The size of the caller's farm in acres. Minimum 0.5."
+          },
+          "monthly_fuel_spend_kes": {
+            "type": "number",
+            "description": "How much the caller currently spends on fuel per month in KES for their irrigation pump. Use 0 if they do not currently use a fuel pump."
+          }
+        },
+        "required": ["crop_type", "farm_size_acres", "monthly_fuel_spend_kes"]
+      }
+    },
+    "server": {
+      "url": "{{SERVER_URL}}/vapi/webhook"
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "troubleshoot_system",
+      "description": "Guides a caller through diagnosing and fixing a SunCulture system issue. Use this whenever a caller reports that their system is not working — pump not starting, low water flow, system locked, battery or charging problems, solar panel faults, controller light queries, or drip irrigation issues. Use 'escalate_technician' when basic troubleshooting steps have not resolved the issue.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "issue_type": {
+            "type": "string",
+            "description": "The type of system issue the caller is experiencing.",
+            "enum": [
+              "pump_not_starting",
+              "low_water_output",
+              "system_locked",
+              "battery_not_charging",
+              "solar_panel_issue",
+              "controller_lights",
+              "drip_irrigation_issue",
+              "escalate_technician"
+            ]
+          }
+        },
+        "required": ["issue_type"]
+      }
+    },
+    "server": {
+      "url": "{{SERVER_URL}}/vapi/webhook"
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "check_account",
+      "description": "Looks up a SunCulture customer's account information using their National ID number. Returns their name, account status, product, total paid, outstanding balance, and next instalment date and amount. Use this when a caller asks about their account balance, payment status, whether their account is locked, their next payment date, or what product they have. Always ask for the caller's National ID before calling this tool.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "national_id": {
+            "type": "string",
+            "description": "The caller's Kenya National ID number (numbers only, no spaces or dashes)."
+          }
+        },
+        "required": ["national_id"]
+      }
+    },
+    "server": {
+      "url": "{{SERVER_URL}}/vapi/webhook"
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "validate_sunculture_agent",
+      "description": "Validates a SunCulture employee/agent in the internal AMT directory using their registered mobile number. Use as the first step when the person wants to create a lead, check commissions, or similar agent-only workflows. Ask for their phone number in Kenya format (07… or 2547…) before calling.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "phone": {
+            "type": "string",
+            "description": "Mobile number on the agent's SunCulture profile (e.g. 254748717044 or 0748717044)"
+          },
+          "inquiry_type": {
+            "type": "string",
+            "enum": ["create_lead", "commissions", "other"]
+          }
+        },
+        "required": ["phone"]
+      }
+    },
+    "server": {
+      "url": "{{SERVER_URL}}/vapi/webhook"
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "create_sunculture_lead",
+      "description": "After validate_sunculture_agent succeeds, submit a new customer lead to the SunCulture sales app (AMT). Use the AMT employee record id from validation as validated_employee_id. Collect all required fields; lead source and water source must match Sales App labels exactly.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "validated_employee_id": {
+            "type": "number",
+            "description": "Integer AMT id from validate_sunculture_agent success"
+          },
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "customer_type": {
+            "type": "string",
+            "enum": ["individual", "distributor"]
+          },
+          "mobilePhone": { "type": "string" },
+          "location": { "type": "string" },
+          "nearestLandmark": { "type": "string" },
+          "productOfInterest": { "type": "string" },
+          "leadSource": {
+            "type": "string",
+            "enum": [
+              "Self Registration Whatsapp",
+              "Stockist",
+              "X Marketing",
+              "Influencer Marketing",
+              "N/A",
+              "Whatsapp",
+              "Website",
+              "Walk-In"
+            ]
+          },
+          "preferredLanguage": {
+            "type": "string",
+            "enum": ["en", "fr", "sw"]
+          },
+          "purchaseDate": { "type": "string" },
+          "waterSource": {
+            "type": "string",
+            "enum": [
+              "Rainwater Harvesting",
+              "Rain",
+              "Lake",
+              "Shallow Water",
+              "River",
+              "Dam"
+            ]
+          },
+          "leadCategory": {
+            "type": "string",
+            "enum": ["HOT", "WARM", "COLD"]
+          },
+          "companyRegionId": { "type": "number" }
+        },
+        "required": [
+          "validated_employee_id",
+          "firstName",
+          "lastName",
+          "customer_type",
+          "mobilePhone",
+          "location",
+          "nearestLandmark",
+          "productOfInterest",
+          "leadSource",
+          "preferredLanguage",
+          "purchaseDate",
+          "waterSource",
+          "leadCategory"
+        ]
+      }
+    },
+    "server": {
+      "url": "{{SERVER_URL}}/vapi/webhook"
+    }
+  }
+]

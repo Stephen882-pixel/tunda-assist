@@ -1,0 +1,32 @@
+{
+  "type": "function",
+  "function": {
+    "name": "handle_objection",
+    "description": "Returns a scripted, empathetic response to a caller's objection or hesitation about purchasing a SunCulture system. Always use this tool when a caller pushes back — never improvise objection responses. Covers price concerns, deposit size, distrust of solar companies, reliability worries, needing family input, stalling, water source depth concerns, existing petrol pump ownership, fraud fears, and unclear volume requirements.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "objection_type": {
+          "type": "string",
+          "description": "The type of objection or concern the caller has raised.",
+          "enum": [
+            "price_too_expensive",
+            "deposit_too_high",
+            "solar_company_distrust",
+            "what_if_it_breaks",
+            "need_to_consult_family",
+            "let_me_think",
+            "water_source_too_deep",
+            "already_have_petrol_pump",
+            "fraud_concerns",
+            "volume_requirements_unclear"
+          ]
+        }
+      },
+      "required": ["objection_type"]
+    }
+  },
+  "server": {
+    "url": "{{SERVER_URL}}/vapi/webhook"
+  }
+}

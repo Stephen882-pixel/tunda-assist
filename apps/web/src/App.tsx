@@ -1,10 +1,13 @@
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ChatWidget } from './components/ChatWidget';
+import { ProtectedRoute } from './components/ProtectedRoute';
+import { LoginPage } from './pages/LoginPage';
+import { DashboardPage } from './pages/DashboardPage';
 import './App.css';
 
-function App() {
+function AgentHome() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-white">
-      {/* Background landing page */}
       <div className="flex flex-col items-center justify-center min-h-screen px-6">
         <div className="text-center max-w-md">
           <div className="w-20 h-20 mx-auto mb-6 rounded-2xl chat-header-gradient flex items-center justify-center shadow-lg">
@@ -24,10 +27,28 @@ function App() {
           </div>
         </div>
       </div>
-
-      {/* Floating Chat Widget */}
       <ChatWidget />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<AgentHome />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

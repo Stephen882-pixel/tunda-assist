@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background -->
+  <rect width="512" height="512" rx="96" fill="#1a5c42"/>
+  <!-- Yellow sun/leaf circle -->
+  <circle cx="256" cy="200" r="90" fill="#f5c842"/>
+  <!-- Green leaf shape over circle -->
+  <path d="M256 120 Q320 170 320 220 Q320 280 256 300 Q192 280 192 220 Q192 170 256 120Z" fill="#2e9e6e"/>
+  <!-- Chat bubble shape at bottom -->
+  <rect x="156" y="310" width="200" height="120" rx="20" fill="#fff" opacity="0.95"/>
+  <polygon points="200,430 220,470 240,430" fill="#fff" opacity="0.95"/>
+  <!-- Three dots in chat bubble -->
+  <circle cx="216" cy="370" r="12" fill="#2e9e6e"/>
+  <circle cx="256" cy="370" r="12" fill="#2e9e6e"/>
+  <circle cx="296" cy="370" r="12" fill="#2e9e6e"/>
+</svg>

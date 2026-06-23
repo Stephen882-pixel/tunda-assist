@@ -21,14 +21,10 @@ async function bootstrap() {
   );
 
   // middlewares
-  app.enableCors({
-    origin: [
-      'http://localhost:5173', // Vite dev server (TundaAssist)
-      'http://localhost:3000',
-      'http://localhost:5174',
-    ],
-    credentials: true,
-  });
+  const corsOrigins = process.env.CORS_ORIGINS
+    ? process.env.CORS_ORIGINS.split(',').map((o) => o.trim())
+    : ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'];
+  app.enableCors({ origin: corsOrigins, credentials: true });
   app.use(morgan('dev'));
   app.use(helmet());
 

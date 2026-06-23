@@ -4,6 +4,7 @@ import { SalesToolsModule } from './sales/sales.module';
 import { ProductToolsModule } from './product/product.module';
 import { SupportToolsModule } from './support/support.module';
 import { ToolsService } from './tools.service';
+import { TicketsModule } from '@/tickets/tickets.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { ToolsService } from './tools.service';
     SalesToolsModule,
     ProductToolsModule,
     SupportToolsModule,
+    TicketsModule,
   ],
   providers: [ToolsService],
   exports: [ToolsService, CommissionToolsModule],

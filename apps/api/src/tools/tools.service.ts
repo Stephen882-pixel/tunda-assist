@@ -22,6 +22,7 @@ import { LeadAmtTool } from './sales/lead-amt.tool';
 import { CommissionSummaryTool } from './commission/commission-summary.tool';
 import { CommissionBreakdownTool } from './commission/commission-breakdown.tool';
 import { LeadStatusTool } from './sales/lead-status.tool';
+import { TicketsService } from '@/tickets/tickets.service';
 
 @Injectable()
 export class ToolsService {
@@ -40,6 +41,7 @@ export class ToolsService {
     private readonly commissionSummaryTool: CommissionSummaryTool,
     private readonly commissionBreakdownTool: CommissionBreakdownTool,
     private readonly leadStatusTool: LeadStatusTool,
+    private readonly ticketsService: TicketsService,
   ) {}
 
   async execute(
@@ -155,6 +157,16 @@ export class ToolsService {
       case 'get_lead_status': {
         const leadId = String(args.lead_id ?? '');
         return this.leadStatusTool.execute(leadId);
+      }
+
+      case 'create_ticket': {
+        return this.ticketsService.createFromChat({
+          agentId: String(args.agent_id ?? 'unknown'),
+          agentName: String(args.agent_name ?? 'Unknown Agent'),
+          category: String(args.category ?? 'other'),
+          description: String(args.description ?? ''),
+          priority: args.priority as string | undefined,
+        });
       }
 
       default:

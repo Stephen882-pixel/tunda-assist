@@ -397,6 +397,44 @@ export const openAiChatTools: ChatCompletionTool[] = [
   {
     type: 'function',
     function: {
+      name: 'create_ticket',
+      description:
+        'Create a support ticket when an agent reports a problem, discrepancy, or issue they need help resolving. ' +
+        'Use when the user says things like "I have a problem", "my commissions are wrong", "I want to report an issue", or any similar complaint. ' +
+        'Ask for their employee ID and name if not already known from the conversation.',
+      parameters: {
+        type: 'object',
+        properties: {
+          agent_id: {
+            type: 'string',
+            description: 'Employee ID of the agent raising the ticket.',
+          },
+          agent_name: {
+            type: 'string',
+            description: 'Full name of the agent.',
+          },
+          category: {
+            type: 'string',
+            enum: ['commission', 'payment', 'technical', 'other'],
+            description: 'Category that best describes the issue.',
+          },
+          description: {
+            type: 'string',
+            description: 'Clear description of the problem in the agent\'s own words.',
+          },
+          priority: {
+            type: 'string',
+            enum: ['LOW', 'MEDIUM', 'HIGH'],
+            description: 'Urgency of the issue (default: MEDIUM).',
+          },
+        },
+        required: ['agent_id', 'agent_name', 'category', 'description'],
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
       name: 'get_lead_status',
       description:
         'Look up information about a specific lead or customer by their lead ID. Returns status, last contact date, next actions, and conversion value.',

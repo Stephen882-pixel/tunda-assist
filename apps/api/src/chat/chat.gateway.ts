@@ -39,33 +39,40 @@ export class ChatGateway implements OnGatewayConnection {
     const auth = client.handshake.auth as { token?: string } | undefined;
     const q = client.handshake.query as { token?: string };
     const token = auth?.token ?? q?.token;
+    const sharedSecret = this.config.get<string>('chatSocket.sharedSecret')?.trim();
 
-    if (!token) {
-      this.logger.warn('Chat socket: rejected — no token');
+    // If a token is present, try JWT then shared secret
+    if (token) {
+      try {
+        const payload = this.jwtService.verify<JwtPayload>(token, {
+          secret: this.config.get<string>('jwt.secret'),
+        });
+        (client.data as Record<string, unknown>).agent = payload;
+        this.logger.debug(`Chat socket: authenticated via JWT (${payload.employeeId})`);
+        return;
+      } catch {
+        // not a valid JWT — try shared secret
+      }
+
+      if (sharedSecret && token === sharedSecret) {
+        this.logger.debug('Chat socket: authenticated via shared secret');
+        return;
+      }
+
+      // Token provided but invalid — reject
+      this.logger.warn('Chat socket: rejected — invalid token');
       client.disconnect(true);
       return;
     }
 
-    // Try JWT first; fall back to legacy shared secret so existing clients keep working
-    try {
-      const payload = this.jwtService.verify<JwtPayload>(token, {
-        secret: this.config.get<string>('jwt.secret'),
-      });
-      (client.data as Record<string, unknown>).agent = payload;
-      this.logger.debug(`Chat socket: authenticated agent ${payload.employeeId}`);
-      return;
-    } catch {
-      // not a JWT — check legacy shared secret
-    }
-
-    const sharedSecret = this.config.get<string>('chatSocket.sharedSecret')?.trim();
-    if (sharedSecret && token === sharedSecret) {
-      this.logger.debug('Chat socket: authenticated via shared secret (legacy)');
+    // No token — allow only if no shared secret is configured (open/dev mode)
+    if (sharedSecret) {
+      this.logger.warn('Chat socket: rejected — token required but not provided');
+      client.disconnect(true);
       return;
     }
 
-    this.logger.warn('Chat socket: rejected — invalid token');
-    client.disconnect(true);
+    this.logger.debug('Chat socket: open access (no secret configured)');
   }
 
   @SubscribeMessage('thread.join')

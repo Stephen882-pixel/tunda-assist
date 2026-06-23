@@ -9,6 +9,7 @@ import { AiModule } from './ai/ai.module';
 import { TelegramModule } from './telegram/telegram.module';
 import { ChatModule } from './chat/chat.module';
 import { TicketsModule } from './tickets/tickets.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { TicketsModule } from './tickets/tickets.module';
     CallReportsModule,
     VapiModule,
     TelegramModule,
+    AuthModule,
     ChatModule,
     TicketsModule,
   ],

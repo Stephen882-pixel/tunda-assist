@@ -7,12 +7,14 @@ import {
   SubscribeMessage,
   WebSocketGateway,
 } from '@nestjs/websockets';
+import { JwtService } from '@nestjs/jwt';
 import { Prisma } from 'generated/prisma/client';
 import { Socket } from 'socket.io';
 import { OpenAiChatService } from './open-ai-chat.service';
 import { ChatThreadService } from './chat-thread.service';
 import { CommissionFlowService } from './commission-flow.service';
 import { ConversationState, FlowType } from './types/conversation-state.types';
+import { JwtPayload } from '../auth/jwt.strategy';
 
 const DEFAULT_METADATA = (client: Socket) => ({
   remoteAddress: client.handshake.address,
@@ -27,25 +29,43 @@ export class ChatGateway implements OnGatewayConnection {
 
   constructor(
     private readonly config: ConfigService,
+    private readonly jwtService: JwtService,
     private readonly threadService: ChatThreadService,
     private readonly openAiChat: OpenAiChatService,
     private readonly commissionFlow: CommissionFlowService,
   ) {}
 
   handleConnection(client: Socket) {
-    const need = this.config.get<string>('chatSocket.sharedSecret')?.trim();
-    if (!need) {
-      return;
-    }
     const auth = client.handshake.auth as { token?: string } | undefined;
     const q = client.handshake.query as { token?: string };
     const token = auth?.token ?? q?.token;
-    if (token !== need) {
-      this.logger.warn(
-        'Chat socket: rejected connection (shared secret mismatch)',
-      );
+
+    if (!token) {
+      this.logger.warn('Chat socket: rejected — no token');
       client.disconnect(true);
+      return;
     }
+
+    // Try JWT first; fall back to legacy shared secret so existing clients keep working
+    try {
+      const payload = this.jwtService.verify<JwtPayload>(token, {
+        secret: this.config.get<string>('jwt.secret'),
+      });
+      (client.data as Record<string, unknown>).agent = payload;
+      this.logger.debug(`Chat socket: authenticated agent ${payload.employeeId}`);
+      return;
+    } catch {
+      // not a JWT — check legacy shared secret
+    }
+
+    const sharedSecret = this.config.get<string>('chatSocket.sharedSecret')?.trim();
+    if (sharedSecret && token === sharedSecret) {
+      this.logger.debug('Chat socket: authenticated via shared secret (legacy)');
+      return;
+    }
+
+    this.logger.warn('Chat socket: rejected — invalid token');
+    client.disconnect(true);
   }
 
   @SubscribeMessage('thread.join')

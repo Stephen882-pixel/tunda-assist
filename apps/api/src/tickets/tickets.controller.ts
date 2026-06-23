@@ -9,15 +9,22 @@ import {
   Query,
   HttpCode,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
+import { AgentRole } from 'generated/prisma/client';
 import { TicketsService } from './tickets.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
 import { QueryTicketDto } from './dto/query-ticket.dto';
 import { TicketResponseDto } from './dto/ticket-response.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RolesGuard } from '../common/guards/roles.guard';
+import { Roles } from '../common/decorators/roles.decorator';
 
 @ApiTags('tickets')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('tickets')
 export class TicketsController {
   constructor(private readonly ticketsService: TicketsService) {}
@@ -30,7 +37,8 @@ export class TicketsController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'List tickets with optional filters and pagination' })
+  @Roles(AgentRole.SUPERVISOR, AgentRole.ADMIN)
+  @ApiOperation({ summary: 'List all tickets (supervisor/admin only)' })
   @ApiResponse({ status: 200, description: 'Paginated list of tickets' })
   findAll(@Query() query: QueryTicketDto) {
     return this.ticketsService.findAll(query);
@@ -46,7 +54,8 @@ export class TicketsController {
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Update ticket status or priority' })
+  @Roles(AgentRole.SUPERVISOR, AgentRole.ADMIN)
+  @ApiOperation({ summary: 'Update ticket status or priority (supervisor/admin only)' })
   @ApiParam({ name: 'id', description: 'Ticket record ID' })
   @ApiResponse({ status: 200, type: TicketResponseDto })
   @ApiResponse({ status: 404, description: 'Ticket not found' })
@@ -55,8 +64,9 @@ export class TicketsController {
   }
 
   @Delete(':id')
+  @Roles(AgentRole.ADMIN)
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({ summary: 'Delete a ticket' })
+  @ApiOperation({ summary: 'Delete a ticket (admin only)' })
   @ApiParam({ name: 'id', description: 'Ticket record ID' })
   @ApiResponse({ status: 204, description: 'Ticket deleted' })
   @ApiResponse({ status: 404, description: 'Ticket not found' })

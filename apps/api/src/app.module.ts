@@ -14,6 +14,7 @@ import { ChatModule } from './chat/chat.module';
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,
+      envFilePath: ['../../.env', '.env'],
     }),
     PrismaModule,
     CommonModule,

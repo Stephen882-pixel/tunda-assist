@@ -22,6 +22,10 @@ export default () => ({
     botToken: process.env.TELEGRAM_BOT_TOKEN,
     webhookSecret: process.env.TELEGRAM_WEBHOOK_SECRET,
   },
+  jwt: {
+    secret: process.env.JWT_SECRET ?? 'changeme-in-production',
+    expiresIn: process.env.JWT_EXPIRES_IN ?? '8h',
+  },
   amt: {
     baseUrl: process.env.AMT_BASE_URL ?? 'https://amt-test.sunculture.io/api',
     employeeId: process.env.AMT_EMPLOYEE_ID ?? '',

@@ -6,9 +6,10 @@ import { ChatThreadService } from './chat-thread.service';
 import { CommissionFlowService } from './commission-flow.service';
 import { PrismaModule } from '../prisma/prisma.module';
 import { ToolsModule } from '../tools/tools.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
-  imports: [PrismaModule, ToolsModule],
+  imports: [PrismaModule, ToolsModule, AuthModule],
   controllers: [ChatController],
   providers: [
     ChatThreadService,

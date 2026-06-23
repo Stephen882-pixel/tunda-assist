@@ -22,6 +22,27 @@ model CallReport {
   @@map("call_reports")
 }
 
+enum AgentRole {
+  AGENT
+  SUPERVISOR
+  ADMIN
+}
+
+model Agent {
+  id         String    @id @default(uuid())
+  employeeId String    @unique @map("employee_id")
+  name       String
+  phone      String
+  pinHash    String    @map("pin_hash")
+  role       AgentRole @default(AGENT)
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+
+  tickets SupportTicket[]
+
+  @@map("agents")
+}
+
 enum TicketStatus {
   OPEN
   IN_PROGRESS
@@ -44,6 +65,8 @@ model SupportTicket {
   priority    TicketPriority @default(MEDIUM)
   createdAt   DateTime       @default(now()) @map("created_at")
   updatedAt   DateTime       @updatedAt @map("updated_at")
+
+  agent Agent @relation(fields: [agentId], references: [employeeId])
 
   @@map("support_tickets")
 }

@@ -8,12 +8,14 @@ import configuration from './config/configuration';
 import { AiModule } from './ai/ai.module';
 import { TelegramModule } from './telegram/telegram.module';
 import { ChatModule } from './chat/chat.module';
+import { TicketsModule } from './tickets/tickets.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,
+      envFilePath: ['../../.env', '.env'],
     }),
     PrismaModule,
     CommonModule,
@@ -22,6 +24,7 @@ import { ChatModule } from './chat/chat.module';
     VapiModule,
     TelegramModule,
     ChatModule,
+    TicketsModule,
   ],
 })
 export class AppModule {}

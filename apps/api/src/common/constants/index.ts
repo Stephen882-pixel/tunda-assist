@@ -1,4 +1,9 @@
-import 'dotenv/config';
+import dotenv from 'dotenv';
+import { resolve } from 'path';
+
+// In this monorepo pnpm sets cwd to apps/api, so walk up to the repo root .env
+dotenv.config({ path: resolve(process.cwd(), '../../.env') });
+dotenv.config(); // fallback to a local apps/api/.env if present
 
 export const DB_CREDENTIALS = {
   host: process.env.DB_HOST || '',
